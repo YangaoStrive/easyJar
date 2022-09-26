@@ -367,6 +367,15 @@ public class EasyJar extends JFrame {
                 ioException.printStackTrace();
                 jTextArea.setText("执行脚本异常信息:" + ioException.toString());
             }
+            // 如果发版路径为空，则不做后续的判断
+            if (devPath == null || devPath.equals("")) {
+                try {
+                    Runtime.getRuntime().exec("explorer " + packPath);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                return;
+            }
             // 5. 将zip文件放入发版路径
             File devPathFile = new File(devPath + "\\" + zipName);
             if (devPathFile.exists()) {
@@ -390,6 +399,11 @@ public class EasyJar extends JFrame {
                 if (b) {
                     jTextArea.append("发版路径文件已生成" + "  " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                     jTextArea.append("\r\n");
+                    try {
+                        Runtime.getRuntime().exec("explorer " + devPath);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
                 } else {
                     jTextArea.setText("发版路径文件生成失败");
                     jTextArea.append("\r\n");
